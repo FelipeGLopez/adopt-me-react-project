@@ -1,17 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
-const modalRoot = document.getElementById("modal");
-
 const Modal = ({ children }) => {
   const elRef = useRef(null);
   if (!elRef.current) {
-    elRef.current = document.createElement("div");
+    const div = document.createElement("div");
+    elRef.current = div;
   }
 
   useEffect(() => {
+    const modalRoot = document.getElementById("modal");
     modalRoot.appendChild(elRef.current);
-    return () => modalRoot.removeChild(elRef.current);
+
+    return () => modalRoot.removeChild(elRef.current); //Es para remover el modal cuando lo cierra
   }, []);
 
   return createPortal(<div>{children}</div>, elRef.current);

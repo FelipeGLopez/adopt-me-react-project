@@ -16,11 +16,12 @@ class Carousel extends React.Component {
   }
   handleIndexClick = event => {
     this.setState({
-      active: +event.target.dataset.index
+      active: +event.target.dataset.index //El + convierte en numero el string este que viene de la api dumb.
     });
   };
   render() {
     const { photos, active } = this.state;
+
     return (
       <div className="carousel">
         <img src={photos[active]} alt="animal" />
