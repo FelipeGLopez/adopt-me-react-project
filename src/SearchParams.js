@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import pet, { ANIMALS } from "@frontendmasters/pet"; // Hace el npm install automatico del npm registry
-// El Parcel es el que hace el import automatico de la linea de arriba
-import Results from "./Results";
+import pet, { ANIMALS } from "@frontendmasters/pet";
 import useDropdown from "./useDropdown";
+import Results from "./Results";
 import ThemeContext from "./ThemeContext";
 
 const SearchParams = () => {
-  // Lo de la linea de abajo es un hook. Todos los hooks empiezan con use...
-  const [location, setLocation] = useState("Seattle, WA"); // The string inside useState is the default state
-  // useState siempre devuelve un array, por eso se le asigna a un array.
-  // El primer item es el state, el segundo item es la funcion que lo actualiza.
-
-  const [breeds, setBreeds] = useState([]);
-  const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
-  const [breed, BreedDropdown, setBreed] = useDropdown("Breed", "", breeds);
-  const [pets, setPets] = useState([]);
   const [theme, setTheme] = useContext(ThemeContext);
+  const [location, updateLocation] = useState("Seattle, WA");
+  const [breeds, updateBreeds] = useState([]);
+  const [pets, setPets] = useState([]);
+  const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
+  const [breed, BreedDropdown, updateBreed] = useDropdown("Breed", "", breeds);
 
   async function requestPets() {
     const { animals } = await pet.animals({
@@ -24,19 +19,20 @@ const SearchParams = () => {
       type: animal
     });
 
+    console.log("animals", animals);
+
     setPets(animals || []);
   }
 
   useEffect(() => {
-    setBreeds([]);
-    setBreed("");
+    updateBreeds([]);
+    updateBreed("");
 
-    pet.breeds(animal).then(({ breeds: apiBreeds }) => {
-      const breedStrings = apiBreeds.map(({ name }) => name);
-      setBreeds(breedStrings);
+    pet.breeds(animal).then(({ breeds }) => {
+      const breedStrings = breeds.map(({ name }) => name);
+      updateBreeds(breedStrings);
     }, console.error);
-  }, [animal, setBreed, setBreeds]);
-  // useEffect se ejecuta despues de que renderiza todo. En este caso es lo ultimo que se ejecuta
+  }, [animal]);
 
   return (
     <div className="search-params">
@@ -52,14 +48,12 @@ const SearchParams = () => {
             id="location"
             value={location}
             placeholder="Location"
-            onChange={event => {
-              setLocation(event.target.value);
-            }}
+            onChange={e => updateLocation(e.target.value)}
           />
         </label>
         <AnimalDropdown />
         <BreedDropdown />
-        <label htmlFor="theme">
+        <label htmlFor="location">
           Theme
           <select
             value={theme}
@@ -68,8 +62,8 @@ const SearchParams = () => {
           >
             <option value="peru">Peru</option>
             <option value="darkblue">Dark Blue</option>
-            <option value="mediumorchid">Mediumorchid</option>
             <option value="chartreuse">Chartreuse</option>
+            <option value="mediumorchid">Medium Orchid</option>
           </select>
         </label>
         <button style={{ backgroundColor: theme }}>Submit</button>
