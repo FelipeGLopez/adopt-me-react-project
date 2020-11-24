@@ -1,8 +1,8 @@
 ### Adopt me app
-React project called "adopt-me" in the course taught by [Brian Holt] @ frontendmasters.com
+React project called "adopt-me" from the course taught by [Brian Holt] @ frontendmasters.com
 
 The purpose of this project is to dive a little bit into some React concepts.
-This project is nearly the same as this [one], but mine has some personal comments.
+This project is nearly the same as this [one], but this has some personal comments.
 
 [one]: https://github.com/btholt/complete-intro-to-react-v5
 [Brian Holt]: https://github.com/btholt
